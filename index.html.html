@@ -1,0 +1,571 @@
+
+   <!DOCTYPE html>
+<html lang="hi">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>District Help Directory — Service Registration</title>
+  <style>
+    body {
+      font-family: 'Poppins', Arial, sans-serif;
+      background: linear-gradient(135deg,#eaf4ff,#ffffff);
+      margin: 0;
+      color: #222;
+      min-height: 100vh;
+    }
+
+    header {
+      background: linear-gradient(90deg,#007bff,#0056d6);
+      color: white;
+      padding: 18px 10px;
+      text-align: center;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.12);
+      position: relative;
+    }
+
+    header h1 { margin: 0; font-size: 22px; }
+    header p { margin: 4px 0 0; font-size: 13px; opacity: 0.95; }
+
+    .container { max-width: 920px; margin: 18px auto; padding: 12px; }
+
+    /* Registration form box (first page) */
+    .box {
+      background: white;
+      width: 420px;
+      margin: 70px auto;
+      padding: 18px;
+      border-radius: 10px;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+    }
+
+    input, select, textarea {
+      width: 96%;
+      padding: 10px;
+      margin: 8px 0;
+      border-radius: 6px;
+      border: 1px solid #cfd8e3;
+      font-family: inherit;
+      font-size: 14px;
+      box-sizing: border-box;
+    }
+
+    button {
+      background: #007bff;
+      color: white;
+      padding: 10px 14px;
+      border-radius: 8px;
+      border: none;
+      cursor: pointer;
+      font-size: 14px;
+    }
+
+    button:hover { background:#0056d6; }
+
+    .muted { color:#666; font-size:13px; }
+
+    /* Thana cards */
+    .thana {
+      background: white;
+      border-radius: 10px;
+      padding: 14px;
+      margin-bottom: 12px;
+      box-shadow: 0 3px 8px rgba(0,0,0,0.06);
+      cursor: pointer;
+      transition: transform .15s ease, background .15s;
+    }
+    .thana:hover { transform: translateY(-3px); background:#f6fbff; }
+
+    .details {
+      background: white;
+      border-radius: 10px;
+      padding: 16px;
+      box-shadow: 0 4px 14px rgba(0,0,0,0.06);
+      animation: fadeIn .25s ease;
+    }
+    @keyframes fadeIn { from { opacity:0; transform: translateY(8px);} to { opacity:1; transform:none; } }
+
+    .service {
+      background: #f8fdff;
+      border: 1px solid #e6f0ff;
+      border-radius: 8px;
+      padding: 10px;
+      margin: 10px 0;
+      position: relative;
+    }
+    .delete-btn {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: #ff5c5c;
+      color: white;
+      border: none;
+      padding: 5px 8px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 12px;
+    }
+
+    /* three-dot popup */
+    .three-dot {
+      position: absolute;
+      top: 14px;
+      right: 18px;
+      width:36px;
+      height:36px;
+      border-radius:50%;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      cursor:pointer;
+      background:rgba(255,255,255,0.12);
+      font-weight:700;
+      font-size:20px;
+      user-select:none;
+    }
+    .menu-popup {
+      position:absolute;
+      right:18px;
+      top:56px;
+      width:200px;
+      background:white;
+      color:#222;
+      border-radius:8px;
+      box-shadow:0 6px 18px rgba(0,0,0,0.12);
+      padding:8px;
+      display:none;
+      z-index:1000;
+    }
+    .menu-popup .item { padding:8px 10px; border-radius:6px; }
+    .menu-popup .item:hover { background:#f1f7ff; }
+
+    /* comment card */
+    .comment-card {
+      background: white;
+      border-radius: 10px;
+      padding: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+      margin-bottom: 14px;
+    }
+    .comment-list .comment {
+      background: #fbfdff;
+      border: 1px solid #eaf2ff;
+      padding: 10px;
+      border-radius: 8px;
+      margin-top: 8px;
+    }
+
+    .back {
+      display:inline-block;
+      margin-top: 12px;
+      background: #999;
+      color: white;
+      text-decoration: none;
+      padding: 6px 12px;
+      border-radius: 6px;
+    }
+
+    @media (max-width: 600px) {
+      .box { width: 92%; margin: 40px auto; }
+      .menu-popup { right: 12px; left:auto; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- PAGE 1: Registration Form (first page shown) -->
+  <div id="regPage" style="display:block;">
+    <div class="box">
+      <h2>Service Provider Registration</h2>
+      <p class="muted">अपनी सेवा रजिस्टर करें — फ़ॉर्म भरें और सबमिट करें।</p>
+
+      <label>नाम</label><br>
+      <input id="pName" placeholder="आपका नाम" />
+
+      <label>पता</label><br>
+      <input id="pAddress" placeholder="पता" />
+
+      <label>संपर्क नंबर</label><br>
+      <input id="pPhone" placeholder="मोबाइल नंबर" />
+
+      <label>सेवा का प्रकार</label><br>
+      <select id="pCategory">
+        <option value="">-- सेवा चुनें --</option>
+        <option>Teacher</option>
+        <option>Doctor</option>
+        <option>Milk Distributor</option>
+        <option>Electrician</option>
+        <option>Plumber</option>
+        <option>Grocery Store</option>
+        <option>Other</option>
+      </select>
+
+      <label>थाना (Choose Thana)</label><br>
+      <select id="pThana"></select>
+
+      <div style="margin-top:12px;">
+        <button id="submitProvider">Submit & Go to Directory</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- PAGE 2: Main App -->
+  <div id="appPage" style="display:none;">
+    <header>
+      <h1>District Help Directory</h1>
+      <p>थाने और आसपास की ज़रूरी सेवाएँ</p>
+
+      <!-- three-dot button -->
+      <div class="three-dot" id="threeDotBtn" title="Occupations">⋮</div>
+      <div class="menu-popup" id="occupationsPopup" aria-hidden="true">
+        <div class="item">Teacher</div>
+        <div class="item">Police</div>
+        <div class="item">Army</div>
+        <div class="item">Doctor</div>
+        <div class="item">Electrician</div>
+        <div class="item">Plumber</div>
+        <div class="item">Grocery Store</div>
+        <div class="item">Other</div>
+      </div>
+    </header>
+
+    <div class="container">
+      <!-- Comment box on main page -->
+      <div class="comment-card">
+        <h3>Comments</h3>
+        <div style="display:flex; gap:8px; align-items:flex-start; flex-wrap:wrap;">
+          <input id="commentName" placeholder="Your name" style="width:200px;" />
+          <textarea id="commentText" rows="2" placeholder="Write your comment..." style="width:100%; max-width:520px;"></textarea>
+        </div>
+        <div style="margin-top:8px;">
+          <button id="postCommentBtn">Post Comment</button>
+        </div>
+        <div class="comment-list" id="commentList" style="margin-top:10px;"></div>
+      </div>
+
+      <!-- Thana list & details -->
+      <div id="thanaList"></div>
+      <div id="thanaDetails" style="display:none;"></div>
+    </div>
+  </div>
+
+<script>
+/* --------------------------
+   Default data (thana list)
+   -------------------------- */
+const defaultData = {
+  "Kotwali Police Station": { address: "Lal Darwaja, Ghazipur", phone: "9454403001", services: [] },
+  "Karanda Police Station": { address: "Karanda, Ghazipur", phone: "9454403002", services: [] },
+  "Jangipur Police Station": { address: "Jangipur, Ghazipur", phone: "9454403003", services: [] },
+  "Mahila Police Station": { address: "City Area, Ghazipur", phone: "9454403004", services: [] },
+  "Kasimabad Police Station": { address: "Kasimabad, Ghazipur", phone: "9454403005", services: [] },
+  "Nonhahara Police Station": { address: "Molnapur, Nonahra, Ghazipur", phone: "9454403457", services: [] },
+  "Mardah Police Station": { address: "NH 29, Mardah, Ghazipur", phone: "9454403457", services: [] },
+  "Birano Police Station": { address: "Ghazipur Mau Road, Pirthipur, Ghazipur", phone: "9454403446", services: [] },
+  "Mohammadabad Police Station": { address: "Mohammadabad, Ghazipur", phone: "9454403458", services: [] },
+  "Bhavarkaul Police Station": { address: "Ballia Ghazipur Road, Ghazipur", phone: "9454403444", services: [] },
+  "Baresar Police Station": { address: "Jahurabad, Ghazipur", phone: "9454403442", services: [] },
+  "Karimuddinpur Police Station": { address: "near Maa Kastharni Mandir, Karimuddinpur, Ghazipur", phone: "9454403453", services: [] },
+  "Sadipur Police Station": { address: "Aunrihar, Ghazipur", phone: "9454403463", services: [] },
+  "Khanpur Police Station": { address: "Saidpur - Khajurhat Rd, Ghazipur", phone: "9454403455", services: [] },
+  "Sadat Police Station": { address: "Sadat, Ghazipur", phone: "9454403461", services: [] },
+  "Bhudkuda Police Station": { address: "Jakhania, Ghazipur", phone: "9454403445", services: [] },
+  "Nandganj Police Station": { address: "Varanasi - Gorakhpur Hwy, Nandganj, Ghazipur", phone: "9454403459", services: [] },
+  "Shadiyabad Police Station": { address: "Barai Para, Ghazipur", phone: "9454403462", services: [] },
+  "Dullahapur Police Station (Kasimabad)": { address: "Kasimabad, Ghazipur", phone: "9454403448", services: [] },
+  "Dullahapur Police Station (Jahanpur)": { address: "Jahanpur, Ghazipur", phone: "9454403448", services: [] },
+  "Zamania Police Station": { address: "Zamania, Ghazipur", phone: "9454403450", services: [] },
+  "Dildarnagar Police Station": { address: "Dildarnagar, Ghazipur", phone: "9454403447", services: [] },
+  "Ghamar Police Station": { address: "Ghamar, Ghazipur", phone: "9454403449", services: [] },
+  "Suhawal Police Station": { address: "Mednipur Mustahakam, Ghazipur", phone: "9454403464", services: [] },
+  "Revatipur Police Station": { address: "Reotipur, Ghazipur", phone: "9454403465", services: [] },
+  "Nagsarhalt Police Station": { address: "Awati, Ghazipur", phone: "9454403466", services: [] }
+};
+
+/* --------------------------
+   Load / Save service data
+   -------------------------- */
+function loadData() {
+  const raw = localStorage.getItem('servicesData');
+  if(raw) {
+    try {
+      return JSON.parse(raw);
+    } catch(e) {
+      console.warn('Error parsing servicesData, using defaults');
+      return JSON.parse(JSON.stringify(defaultData));
+    }
+  }
+  // deep copy default
+  return JSON.parse(JSON.stringify(defaultData));
+}
+
+function saveData(d) {
+  localStorage.setItem('servicesData', JSON.stringify(d));
+}
+
+let data = loadData();
+
+/* --------------------------
+   Populate thana select on reg page
+   -------------------------- */
+const thanaSelect = document.getElementById('pThana');
+
+function fillThanaSelect() {
+  thanaSelect.innerHTML = '<option value="">-- Select Thana --</option>';
+  for(let th in data) {
+    const opt = document.createElement('option');
+    opt.value = th;
+    opt.textContent = th;
+    thanaSelect.appendChild(opt);
+  }
+}
+fillThanaSelect();
+
+/* --------------------------
+   Registration form submit
+   -------------------------- */
+document.getElementById('submitProvider').addEventListener('click', () => {
+  const name = document.getElementById('pName').value.trim();
+  const address = document.getElementById('pAddress').value.trim();
+  const phone = document.getElementById('pPhone').value.trim();
+  const category = document.getElementById('pCategory').value;
+  const thana = document.getElementById('pThana').value;
+
+  if(!name || !address || !phone || !category || !thana) {
+    alert('कृपया सभी फ़ील्ड भरें और थाना चुनें।');
+    return;
+  }
+
+  const newService = { name, address, phone, category };
+  // ensure services array exists
+  if(!data[thana].services) data[thana].services = [];
+  data[thana].services.push(newService);
+  saveData(data);
+
+  // clear form
+  document.getElementById('pName').value = '';
+  document.getElementById('pAddress').value = '';
+  document.getElementById('pPhone').value = '';
+  document.getElementById('pCategory').value = '';
+  document.getElementById('pThana').value = '';
+
+  // go to main app page
+  document.getElementById('regPage').style.display = 'none';
+  document.getElementById('appPage').style.display = 'block';
+
+  // refresh thana list to show saved provider
+  showThanas();
+  renderComments();
+  alert('Service registered successfully! You are now in the directory.');
+});
+
+/* --------------------------
+   Floating occupations popup
+   -------------------------- */
+const threeDotBtn = document.getElementById('threeDotBtn');
+const occupationsPopup = document.getElementById('occupationsPopup');
+
+threeDotBtn.addEventListener('click', (e) => {
+  e.stopPropagation();
+  occupationsPopup.style.display = occupationsPopup.style.display === 'block' ? 'none' : 'block';
+  occupationsPopup.setAttribute('aria-hidden', occupationsPopup.style.display !== 'block');
+});
+document.addEventListener('click', () => {
+  if(occupationsPopup.style.display === 'block') {
+    occupationsPopup.style.display = 'none';
+    occupationsPopup.setAttribute('aria-hidden', 'true');
+  }
+});
+occupationsPopup.addEventListener('click', (e) => e.stopPropagation());
+
+/* --------------------------
+   Thana list & details functions
+   -------------------------- */
+const thanaListDiv = document.getElementById('thanaList');
+const thanaDetailsDiv = document.getElementById('thanaDetails');
+const districtName = "Ghazipur";
+
+function showThanas() {
+  thanaDetailsDiv.style.display = 'none';
+  thanaListDiv.style.display = 'block';
+  thanaListDiv.innerHTML = `<h2 style="color:#0056d6; margin-bottom:10px;">${districtName} District</h2>`;
+  for(let name in data) {
+    const t = data[name];
+    const d = document.createElement('div');
+    d.className = 'thana';
+    d.innerHTML = `<strong>${name}</strong><br><small>${t.address}</small>`;
+    d.onclick = () => showDetails(name);
+    thanaListDiv.appendChild(d);
+  }
+}
+
+function showDetails(name) {
+  const t = data[name];
+  thanaListDiv.style.display = 'none';
+  thanaDetailsDiv.style.display = 'block';
+
+  thanaDetailsDiv.innerHTML = `
+    <div class="details">
+      <h2>${name}</h2>
+      <p><b>पता:</b> ${t.address}<br><b>थाना नंबर:</b> <a href="tel:${t.phone}">📞 ${t.phone}</a></p>
+      <h3>रजिस्टर्ड सेवाएँ:</h3>
+      <div id="servicesList"></div>
+
+      <h3>नई सेवा रजिस्टर करें (इस थाने में):</h3>
+      <form id="registerForm">
+        <input type="text" id="regName" placeholder="नाम" required />
+        <input type="text" id="regAddress" placeholder="पता" required />
+        <input type="tel" id="regPhone" placeholder="संपर्क नंबर" required />
+        <select id="regCategory" required>
+          <option value="">सेवा का प्रकार चुनें</option>
+          <option>Teacher</option>
+          <option>Doctor</option>
+          <option>Milk Distributor</option>
+          <option>Electrician</option>
+          <option>Plumber</option>
+          <option>Grocery Store</option>
+          <option>Other</option>
+        </select>
+        <button type="submit">Register</button>
+      </form>
+
+      <a class="back" href="#" onclick="backToList(event)">⬅️ वापस जाएँ</a>
+    </div>
+  `;
+  updateServicesList(name);
+
+  document.getElementById('registerForm').onsubmit = function(e) {
+    e.preventDefault();
+    const newService = {
+      name: document.getElementById('regName').value.trim(),
+      address: document.getElementById('regAddress').value.trim(),
+      phone: document.getElementById('regPhone').value.trim(),
+      category: document.getElementById('regCategory').value
+    };
+    if(!newService.name || !newService.address || !newService.phone || !newService.category) {
+      alert('सभी फ़ील्ड भरें।');
+      return;
+    }
+    if(!data[name].services) data[name].services = [];
+    data[name].services.push(newService);
+    saveData(data);
+    alert('सेवा रजिस्टर हो गई!');
+    updateServicesList(name);
+    e.target.reset();
+  };
+}
+
+function backToList(e) {
+  e.preventDefault();
+  thanaDetailsDiv.style.display = 'none';
+  thanaListDiv.style.display = 'block';
+}
+
+function updateServicesList(thanaName) {
+  const t = data[thanaName] || { services: [] };
+  const servicesDiv = document.getElementById('servicesList');
+  servicesDiv.innerHTML = '';
+
+  if(!t.services || t.services.length === 0) {
+    servicesDiv.innerHTML = `<p style="color:gray;">अभी कोई सेवा रजिस्टर्ड नहीं है।</p>`;
+    return;
+  }
+
+  t.services.forEach((s, i) => {
+    const div = document.createElement('div');
+    div.className = 'service';
+    div.innerHTML = `
+      <div style="font-weight:bold; color:#0056d6;">${escapeHtml(s.category)}</div>
+      <div><b>${escapeHtml(s.name)}</b></div>
+      <div>${escapeHtml(s.address)}</div>
+      <div>📞 ${escapeHtml(s.phone)}</div>
+      <button class="delete-btn" onclick="deleteService('${thanaName}', ${i})">हटाएँ</button>
+    `;
+    servicesDiv.appendChild(div);
+  });
+}
+
+function deleteService(thanaName, index) {
+  if(confirm('क्या आप इस सेवा को हटाना चाहते हैं?')) {
+    if(data[thanaName] && data[thanaName].services) {
+      data[thanaName].services.splice(index, 1);
+      saveData(data);
+      // if currently viewing details, refresh
+      if(thanaDetailsDiv.style.display === 'block') updateServicesList(thanaName);
+    }
+  }
+}
+
+/* --------------------------
+   Comments system (global main page)
+   -------------------------- */
+const commentListElem = document.getElementById('commentList');
+const postCommentBtn = document.getElementById('postCommentBtn');
+const commentNameInput = document.getElementById('commentName');
+const commentTextInput = document.getElementById('commentText');
+
+postCommentBtn.addEventListener('click', () => {
+  const name = commentNameInput.value.trim();
+  const text = commentTextInput.value.trim();
+  if(!name || !text) { alert('कृपया नाम और टिप्पणी दोनों भरें।'); return; }
+
+  const comments = JSON.parse(localStorage.getItem('comments')) || [];
+  const newComment = { user: name, text: text, time: new Date().toISOString() };
+  comments.unshift(newComment);
+  localStorage.setItem('comments', JSON.stringify(comments));
+  commentTextInput.value = '';
+  renderComments();
+});
+
+function renderComments() {
+  const comments = JSON.parse(localStorage.getItem('comments')) || [];
+  commentListElem.innerHTML = '';
+  if(comments.length === 0) {
+    commentListElem.innerHTML = `<div style="color:gray;">कोई टिप्पणी अभी तक नहीं है — आप पहला टिप्पणी करें!</div>`;
+    return;
+  }
+  comments.forEach(c => {
+    const d = document.createElement('div');
+    d.className = 'comment';
+    const time = new Date(c.time);
+    const timeStr = time.toLocaleString('hi-IN', { dateStyle: 'medium', timeStyle: 'short' });
+    d.innerHTML = `<div style="font-weight:600;">${escapeHtml(c.user)}</div>
+                   <div style="font-size:14px; margin-top:6px;">${escapeHtml(c.text)}</div>
+                   <div style="font-size:12px; color:#666; margin-top:6px;">${timeStr}</div>`;
+    commentListElem.appendChild(d);
+  });
+}
+
+/* --------------------------
+   Helpers & init
+   -------------------------- */
+function escapeHtml(unsafe) {
+  return String(unsafe)
+    .replace(/&/g,'&amp;')
+    .replace(/</g,'&lt;')
+    .replace(/>/g,'&gt;')
+    .replace(/"/g,'&quot;')
+    .replace(/'/g,'&#039;');
+}
+
+// show app if servicesData already present? We'll still start at reg page by requirement.
+// But if user previously registered and wants to go directly, optional: detect a flag. For now always show reg page first.
+
+function initApp() {
+  // refresh in-memory data from storage (in case something changed)
+  data = loadData();
+  fillThanaSelect(); // update thana options on reg page in case new thanas added
+  // Hide reg page if user wants to skip? We keep reg page as first page per request.
+  // But if you want to auto-redirect to app when there are services, uncomment below:
+  // if(Object.values(data).some(t => t.services && t.services.length>0)) { document.getElementById('regPage').style.display='none'; document.getElementById('appPage').style.display='block'; showThanas(); renderComments(); }
+}
+
+initApp();
+
+// showThanas and renderComments defined/used whenever appPage shown
+// When app page becomes visible (after registration), show list and comments
+// To support opening app directly manually, you can call:
+// document.getElementById('regPage').style.display='none'; document.getElementById('appPage').style.display='block'; showThanas(); renderComments();
+
+</script>
+</body>
+</html>
